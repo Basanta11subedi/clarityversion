@@ -12,40 +12,37 @@ function App() {
   const [deploymentStatus, setDeploymentStatus] = useState('');
   const [showCopied, setShowCopied] = useState(false);
 
-  // Check wallet connection
   useEffect(() => {
-    const checkConnection = async () => {
-      const connected = isConnected();
-      setIsWalletConnected(connected);
+     const checkConnection = async () => {
+       const connected = isConnected();
+       setIsWalletConnected(connected);
+
       if (connected) {
         const storage = getLocalStorage();
-        const address = storage?.addresses?.stx?.[0]?.address;
-        if (address) setWalletAddress(address);
-      }
+         const address = storage?.addresses?.stx?.[0]?.address;
+         if (address) {
+          setWalletAddress(address);
+        }
+       }
     };
-    checkConnection();
-  }, []);
 
-  // Connect wallet
+     checkConnection();
+   }, []);
+
   const handleConnectWallet = async () => {
     try {
-      await connect({
-        appDetails: {
-          name: 'Clarity Deployer',
-          icon: 'https://clarity-lang.org/favicon.ico'
-        },
-        network: STACKS_TESTNET,
-      });
+      await connect();
       setIsWalletConnected(true);
       const storage = getLocalStorage();
       const address = storage?.addresses?.stx?.[0]?.address;
-      if (address) setWalletAddress(address);
+      if (address) {
+        setWalletAddress(address);
+      }
     } catch (error) {
       console.error('Error connecting wallet:', error);
     }
   };
 
-  // Disconnect wallet
   const handleDisconnectWallet = () => {
     disconnect();
     setIsWalletConnected(false);
