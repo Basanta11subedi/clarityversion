@@ -86,7 +86,8 @@ function App() {
         throw new Error('Deployment failed - no transaction ID received');
       }
 
-      setDeploymentStatus(`Deployment successful! TX ID: ${response.txid}`);
+      const contractAddress = `${walletAddress}.${contractName}`;
+      setDeploymentStatus(`Deployment successful! TX ID: ${response.txid}\nContract Address: ${contractAddress}`);
       setContractName('');
       setContractCode('');
     } catch (err) {
@@ -175,12 +176,12 @@ function App() {
             </div>
             <h2 className="text-2xl font-bold mb-2">Connect Your Wallet</h2>
             <p className="mb-6 text-gray-400">To deploy Clarity contracts, please connect your Stacks wallet</p>
-            <button
+            {/* <button
               onClick={handleConnectWallet}
               className="px-8 py-3 bg-gradient-to-r from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 rounded-lg transition-all duration-200 shadow-lg hover:shadow-indigo-500/30 text-lg font-medium"
             >
               Connect Wallet
-            </button>
+            </button> */}
           </div>
         ) : (
           <div className="bg-gray-800/70 backdrop-blur-sm rounded-xl shadow-2xl overflow-hidden border border-gray-700/50 transform transition-all hover:border-indigo-500/30">
@@ -321,15 +322,23 @@ function App() {
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                     )}
-                    <div className="text-sm">
-                      {deploymentStatus}
-                      {deploymentStatus.includes('TX ID') && (
-                        <button 
-                          onClick={() => navigator.clipboard.writeText(deploymentStatus.split('TX ID: ')[1])}
-                          className="ml-2 text-xs bg-green-800/50 hover:bg-green-700/50 px-2 py-1 rounded inline-flex items-center"
-                        >
-                          Copy
-                        </button>
+                    <div className="text-sm whitespace-pre-wrap">
+                  {deploymentStatus}
+                  {deploymentStatus.includes('TX ID') && (
+              <div className="mt-2 space-x-2">
+               <button 
+                  onClick={() => navigator.clipboard.writeText(deploymentStatus.split('TX ID: ')[1].split('\n')[0])}
+                  className="text-xs bg-green-800/50 hover:bg-green-700/50 px-2 py-1 rounded inline-flex items-center"
+                >
+                  Copy TX ID
+                </button>
+                <button 
+                  onClick={() => navigator.clipboard.writeText(deploymentStatus.split('Contract Address: ')[1])}
+                  className="text-xs bg-green-800/50 hover:bg-green-700/50 px-2 py-1 rounded inline-flex items-center"
+               >
+                  Copy Address
+                </button>
+              </div>
                       )}
                     </div>
                   </div>
