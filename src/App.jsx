@@ -258,7 +258,7 @@ function App() {
                     value={contractCode}
                     onChange={(e) => setContractCode(e.target.value)}
                     className="w-full h-96 px-4 py-3 bg-gray-700/50 border border-gray-600/50 rounded-lg font-mono text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 placeholder-gray-500 transition-all duration-200 resize-none"
-                    placeholder={`(define-public (hello-world)\n  (ok "Hello, Clarity ${activeTab === 'v2' ? 'v2' : 'v3'}!"))`}
+                    placeholder={`(define-read-only (hello-world)\n  (ok "Hello, Clarity ${activeTab === 'v2' ? 'v2' : 'v3'}!"))`}
                   ></textarea>
                   {contractCode && (
                     <button 
